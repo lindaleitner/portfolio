@@ -267,50 +267,47 @@ footer p a:hover::after {
 }
 
 
-/* --- Kompletter Fix für Mobile Darstellung --- */
+/*----------------- Responsive Fix für Projektseiten -----------------*/
 @media (max-width: 768px) {
 
-    /* Navigation zentriert, nicht absolut */
+    /* Navigation */
     nav {
         position: relative;
         top: 0;
         left: 0;
         transform: none;
-        padding: 1rem 0;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 
-    /* Grid: immer nur 1 Spalte */
+    /* Alle Projektgrids werden einspaltig */
     .project-grid {
-        display: grid;
-        grid-template-columns: 1fr !important;
-        gap: 2rem;
-        margin-top: 2rem;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        margin-top: 2rem !important;
     }
 
-    /* Karten sollen sich stapeln und volle Breite haben */
+    /* Karten untereinander stapeln */
     .project-card {
         position: static !important;
         width: 100% !important;
         margin: 0 auto !important;
-        padding-bottom: 1rem;
     }
 
-    /* Bilder und Videos: normale Positionierung und volle Breite */
+    /* Bilder & Videos im normalen Flow, volle Breite */
     .project-card img,
     .project-card video {
         position: static !important;
         transform: none !important;
-        display: block;
+        display: block !important;
         width: 100% !important;
         height: auto !important;
         max-width: 100% !important;
         margin: 0 0 1rem 0 !important;
-        border-radius: 12px;
     }
 
-    /* Alle Sonderpositionen deaktivieren */
-    #single, .two, .three, .four, .five {
+    /* Alle Sonderpositionierungen deaktivieren */
+    .two, .three, .four, .five, #single {
         position: static !important;
         left: auto !important;
         top: auto !important;
@@ -318,15 +315,9 @@ footer p a:hover::after {
         max-width: 100% !important;
     }
 
-    /* Textabstände kleiner, um Layout kompakter zu halten */
+    /* Weniger Padding in Textbox */
     .project-info {
         padding: 1rem 1.25rem;
-    }
-
-    /* Überschriften etwas kleiner */
-    h2 {
-        font-size: 1.5rem;
-        text-align: center;
     }
 
     /* Footer kompakter */
