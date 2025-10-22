@@ -1,0 +1,212 @@
+/* Allgemein */
+html {
+    font-family: "Lato", sans-serif;
+    background-color: #ffffff;
+    color: #242424;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Navigation */
+nav {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    width: auto;
+    z-index: 10;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+/* animierter Hover-Effekt */
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #ffa300;
+    transition: width 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ffa300;
+}
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Überschriften */
+h1 {
+    font-family: Impact, sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin: 6rem 0 4rem;
+    letter-spacing: 2px;
+    color: #242424;
+}
+
+h2 {
+    font-family: Impact, sans-serif;
+    font-size: 1.5rem;
+    color: #242424;
+    padding-bottom: 0.2rem;
+}
+
+h4{
+    font-size: 0.8rem;
+    margin: 0.5rem 0 0.3rem;
+    color: #777;
+}
+
+/* CV Sections */
+.cv-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cv-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.cv-row h2 {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    flex-shrink: 0;
+    margin-top: 0.8rem;
+    line-height: 1.2;
+}
+
+.cv-row .cv-content {
+    flex: 1;
+}
+
+.cv-content p {
+    margin: 0.4rem 0;
+}
+
+/* Zeitleiste für Berufserfahrung & Ausbildung */
+.cv-content h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 1rem 0 0.3rem;
+    color: #555;
+}
+
+.cv-content p,
+.cv-content ul {
+    margin-left: 1rem;
+}
+
+/* Listen */
+.cv-content ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.cv-content li {
+    margin-bottom: 0.4rem;
+}
+
+.cv-section.knowledge .cv-content ul,
+.cv-section.strengths .cv-content ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.cv-section.knowledge .cv-content li,
+.cv-section.strengths .cv-content li {
+    background-color: #f5f5f5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+.cv-row.personal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.cv-row.personal .cv-content {
+    flex: 2;
+}
+
+.cv-row.personal .cv-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cv-row {
+        flex-direction: column;
+    }
+
+    .cv-row h2 {
+        writing-mode: horizontal-tb;
+        transform: rotate(0);
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #ffa300;
+        padding-bottom: 0.2rem;
+    }
+
+    /* NEU: Bild über dem Text, mittig */
+    .cv-row.personal {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cv-row.personal .cv-content {
+        margin-top: 1rem;
+    }
+}

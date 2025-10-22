@@ -1,0 +1,134 @@
+/* Allgemein */
+html {
+    font-family: "Lato", sans-serif;
+    background-color: #ffffff;
+    color: #242424;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Navigation */
+nav {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    width: auto;
+    z-index: 10;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #ffa300;
+    transition: width 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ffa300;
+}
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Überschriften */
+h1 {
+    font-family: Impact, sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin: 5rem;
+    color: #242424;
+}
+
+h2 {
+    font-family: Impact, sans-serif;
+    font-size: 1.5rem;
+    color: #242424;
+    padding-bottom: 0.2rem;
+}
+
+/* CV Sections */
+.cv-section {
+    margin-bottom: 2rem;
+}
+
+/* Vertikale h2 links */
+.cv-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    /*margin-bottom: 2rem;*/
+}
+
+.cv-row h2 {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    flex-shrink: 0;
+    margin-top: 1rem;
+}
+
+.cv-row .cv-content {
+    flex: 1;
+}
+
+.cv-content p {
+    margin: 0.4rem 0;
+}
+
+.cv-content ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.cv-content li {
+    margin-bottom: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cv-row {
+        flex-direction: column;
+    }
+    .cv-row h2 {
+        writing-mode: horizontal-tb;
+        transform: rotate(0);
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #ffa300;
+        padding-bottom: 0.2rem;
+    }
+}

@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Geschützter Bereich"
+AuthUserFile /Users/linda_leitner/Documents/Portfolio/.htpasswd
+Require valid-user

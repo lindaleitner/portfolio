@@ -1,0 +1,274 @@
+html {
+    font-family: "Lato", sans-serif;
+    background-color: #ffffff;
+    color: #242424;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+div{
+    margin-top: 3rem;
+}
+
+nav {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    width: auto;
+    z-index: 10;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #ffa300;
+    transition: width 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ffa300;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+.web-ux {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+}
+
+h2 {
+    font-family: Impact, sans-serif;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.project-grid {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.project-grid.single {
+    grid-template-columns: 1fr;
+}
+
+.project-grid.double {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 7rem;
+}
+
+.project-card {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    padding-bottom: 2rem;
+    overflow: visible;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.project-card img {
+    position: absolute;
+    transform: translateX(-50%);
+    border-radius: 12px;
+}
+
+.project-card video {
+    position: absolute;
+    transform: translateX(-50%);
+    border-radius: 12px;
+}
+
+#single {
+    max-width: 500px;
+    left: 70%;
+    top: -150px;
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.two {
+    max-width: 150px;
+    left: 80%;
+    top: -250px;
+    margin-top: 8rem;
+    /*padding-top: 5rem;*/
+    text-align: left;
+}
+
+.three {
+    max-width: 250px;
+    left: 75%;
+    top: -250px;
+    margin-top: 8rem;
+    /*padding-top: 5rem;*/
+    text-align: left;
+}
+
+.four{
+    max-width: 180px;
+    left: 75%;
+    top: -170px;
+    margin-top: 5rem;
+    /*padding-top: 5rem;*/
+    text-align: left;
+}
+
+.five{
+    max-width: 300px;
+    left: 70%;
+    top: -170px;
+    margin-top: 6rem;
+    /*padding-top: 5rem;*/
+    text-align: left;
+}
+
+
+.project-info {
+    padding: 3rem;
+}
+
+.project-info h3 {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.project-info p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+button {
+    background-color: #ffa300;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #ff8c00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    margin: 2rem;
+    padding: 2.5rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    color: #F2F0EF;
+    background: #050301;
+}
+
+footer a {
+    color: #F2F0EF;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+footer a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: #ffa300;
+    transition: width 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffa300;
+}
+
+footer p a:hover::after {
+    width: 100%;
+}
+
+
+
+@media(max-width: 1024px) {
+    .project-card img,
+    .project-card video {
+        position: static;
+        transform: none;
+        max-width: 100%;
+        margin: 0 auto 1.5rem auto;
+        display: block;
+    }
+
+    #single {
+        max-width: 100%;
+        left: auto;
+        margin-top: 0;
+    }
+
+    .two {
+        max-width: 100%;
+        left: auto;
+        margin-top: 0;
+    }
+}
+
+
+@media(max-width: 768px) {
+    .project-card {
+        flex: 1 1 100%;
+    }
+}
