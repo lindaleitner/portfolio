@@ -267,8 +267,57 @@ footer p a:hover::after {
 }
 
 
-@media(max-width: 768px) {
-    .project-card {
-        flex: 1 1 100%;
+/* --- Responsive fixes für Mobile (füge ans Ende der CSS) --- */
+@media (max-width: 768px) {
+
+    /* Staple die Grid-Elemente untereinander */
+    .project-grid.double,
+    .project-grid.single {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-top: 2rem; /* weniger spacing für mobile */
+    }
+
+    /* Bilder/Videos im normalen Flow, volle Breite */
+    .project-card img,
+    .project-card video {
+        position: static !important;
+        transform: none !important;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        margin: 0 0 1rem 0;
+        display: block;
+    }
+
+    /* Entferne große negative top/left Offsets für die size-classes auf Mobile */
+    .two, .three, .four, .five, #single {
+        left: auto !important;
+        top: auto !important;
+        margin-top: 0 !important;
+        max-width: 100%;
+        text-align: left;
+    }
+
+    /* Nav nicht absolut positionieren auf kleinen Bildschirmen */
+    nav {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+    }
+
+    /* Project-info Padding verkleinern, damit Inhalte besser passen */
+    .project-info {
+        padding: 1.25rem;
+    }
+
+    /* Footer padding an mobile anpassen */
+    footer {
+        padding: 1.5rem;
+        margin: 1rem 0;
     }
 }
+
