@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linda Leitner - Portfolio</title>
     <link rel="stylesheet" href="../../stylesheet/photo.css">
+    <link
 </head>
 <body>
 
@@ -109,7 +110,6 @@
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart3.png" alt="Fine Art 3"></div>
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart4.png" alt="Fine Art 4"></div>
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart6.png" alt="Fine Art 6"></div>
-            <div class="photo-item fineart"><img src="../../images/sources/images/fineart7.png" alt="Fine Art 7"></div>
         </div>
 
     </section>
@@ -120,6 +120,14 @@
 <footer>
     <p>Kontakt: <a href="mailto:linda.leitner1@gmail.com">linda.leitner1@gmail.com</a> | Instagram: <a href="https://instagram.com/linda_leitner" target="_blank">linda_leitner</a></p>
 </footer>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-prev">&#10094;</button>
+    <img class="lightbox-content" id="lightbox-img" alt="Vergrößertes Bild">
+    <button class="lightbox-next">&#10095;</button>
+</div>
 
 <script>
     // Foto-Filter
@@ -186,6 +194,88 @@
 
     // Start mit erstem Video
     showVideo(currentIndex);
+
+    //Gallery Lightbox
+    // --- Lightbox / Modal Logik ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevImgBtn = document.querySelector('.lightbox-prev');
+    const nextImgBtn = document.querySelector('.lightbox-next');
+
+    let currentVisibleImages = [];
+    let currentImageIndex = 0;
+
+    // Hilfsfunktion: Ermittelt alle aktuell sichtbaren Bilder
+    function getVisibleImages() {
+        return Array.from(document.querySelectorAll('.photo-item'))
+            .filter(item => item.style.display !== 'none')
+            .map(item => item.querySelector('img'));
+    }
+
+    // Öffnet das Bild am gegebenen Index
+    function openLightbox(index) {
+        currentVisibleImages = getVisibleImages();
+        if (currentVisibleImages.length === 0) return;
+
+        currentImageIndex = index;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+        lightbox.classList.add('active');
+    }
+
+    // Klick-Event auf alle Bild-Container
+    photoItems.forEach(item => {
+        const img = item.querySelector('img');
+        img.addEventListener('click', () => {
+            const visibleImgs = getVisibleImages();
+            const index = visibleImgs.indexOf(img);
+            if (index !== -1) {
+                openLightbox(index);
+            }
+        });
+    });
+
+    // Schließen
+    closeBtn.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+    });
+
+    // Klick außerhalb des Bildes schließt ebenfalls
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.classList.remove('active');
+        }
+    });
+
+    // Nächstes Bild
+    nextImgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentImageIndex = (currentImageIndex + 1) % currentVisibleImages.length;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+    });
+
+    // Vorheriges Bild
+    prevImgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentImageIndex = (currentImageIndex - 1 + currentVisibleImages.length) % currentVisibleImages.length;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+    });
+
+    // Tastatur-Steuerung (Pfeiltasten & ESC)
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+            lightbox.classList.remove('active');
+        } else if (e.key === 'ArrowRight') {
+            nextImgBtn.click();
+        } else if (e.key === 'ArrowLeft') {
+            prevImgBtn.click();
+        }
+    });
 </script>
 
 
