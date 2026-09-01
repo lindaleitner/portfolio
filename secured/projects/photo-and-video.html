@@ -256,7 +256,6 @@
     let currentVisibleImages = [];
     let currentImageIndex = 0;
 
-    // KORRIGIERTE Hilfsfunktion: Erkennt Bilder jetzt auch beim ersten Aufruf richtig!
     function getVisibleImages() {
         return Array.from(document.querySelectorAll('.photo-item'))
             .filter(item => getComputedStyle(item).display !== 'none')
