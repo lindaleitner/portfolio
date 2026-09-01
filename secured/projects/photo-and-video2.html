@@ -11,10 +11,22 @@
 <header>
     <section class="video-wrapper">
         <!-- Video 1 -->
-        <video class="heroVideo active" src="../../images/sources/videos/EyesShut.mov" poster="../../images/sources/videos/EyesShut.png" muted controls></video>
+        <iframe
+                class="heroVideo"
+                src="https://www.youtube.com/embed/aXv8C6deQ38?mute=1"
+                frameborder="0"
+                allow="encrypted-media"
+                allowfullscreen>
+        </iframe>
 
         <!-- Video 2 -->
-        <video class="heroVideo" src="../../images/sources/videos/IMGVID_Afreshed.MP4" poster="../../images/sources/videos/afreshed.jpg" muted controls></video>
+        <iframe
+                class="heroVideo"
+                src="https://www.youtube.com/embed/KJFXMO8Ce2w?mute=1"
+                frameborder="0"
+                allow="encrypted-media"
+                allowfullscreen>
+        </iframe>
 
     </section>
 
@@ -67,6 +79,10 @@
             <div class="photo-item people"><img src="../../images/sources/images/people8.png" alt="People 8"></div>
             <div class="photo-item people"><img src="../../images/sources/images/people9.png" alt="People 9"></div>
             <div class="photo-item people"><img src="../../images/sources/images/people10.png" alt="People 10"></div>
+            <div class="photo-item people"><img src="../../images/sources/images/people12.png" alt="People 12"></div>
+            <div class="photo-item people"><img src="../../images/sources/images/people13.png" alt="People 13"></div>
+            <div class="photo-item people"><img src="../../images/sources/images/people14.png" alt="People 14"></div>
+
 
             <!-- Landschaft / Landscape -->
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape2.png" alt="Landscape 2"></div>
@@ -77,6 +93,14 @@
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape10.png" alt="Landscape 10"></div>
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape15.png" alt="Landscape 15"></div>
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape17.png" alt="Landscape 17"></div>
+            <div class="photo-item landscape"><img src="../../images/sources/images/landscape18.png" alt="Landscape 18"></div>
+            <div class="photo-item landscape"><img src="../../images/sources/images/landscape19.png" alt="Landscape 19"></div>
+            <div class="photo-item landscape"><img src="../../images/sources/images/landscape20.png" alt="Landscape 20"></div>
+            <div class="photo-item landscape"><img src="../../images/sources/images/landscape21.png" alt="Landscape 21"></div>
+
+
+
+
 
             <!-- Fine Art -->
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart.png" alt="Fine Art 0"></div>
@@ -85,7 +109,6 @@
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart3.png" alt="Fine Art 3"></div>
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart4.png" alt="Fine Art 4"></div>
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart6.png" alt="Fine Art 6"></div>
-            <div class="photo-item fineart"><img src="../../images/sources/images/fineart7.png" alt="Fine Art 7"></div>
         </div>
 
     </section>
@@ -96,6 +119,14 @@
 <footer>
     <p>Kontakt: <a href="mailto:linda.leitner1@gmail.com">linda.leitner1@gmail.com</a> | Instagram: <a href="https://instagram.com/linda_leitner" target="_blank">linda_leitner</a></p>
 </footer>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-prev">&#10094;</button>
+    <img class="lightbox-content" id="lightbox-img" alt="Vergrößertes Bild">
+    <button class="lightbox-next">&#10095;</button>
+</div>
 
 <script>
     // Foto-Filter
@@ -128,12 +159,26 @@
     function showVideo(index) {
         videos.forEach((video, i) => {
             video.classList.remove('active');
-            video.pause();
-            if (i === index) {
-                video.classList.add('active');
+
+            // Stoppe nur HTML-Videos, nicht iframes
+            if (video.tagName.toLowerCase() === 'video') {
+                video.pause();
                 video.currentTime = 0;
             }
+
+            // Stoppe YouTube-Video (setzt autoplay ab)
+            if (video.tagName.toLowerCase() === 'iframe') {
+                video.src = video.src; // reload to stop playback
+            }
         });
+
+        const activeVideo = videos[index];
+        activeVideo.classList.add('active');
+
+        // Falls HTML-Video: starte es
+        if (activeVideo.tagName.toLowerCase() === 'video') {
+            activeVideo.play();
+        }
     }
 
     nextBtn.addEventListener('click', () => {
@@ -146,9 +191,90 @@
         showVideo(currentIndex);
     });
 
-
     // Start mit erstem Video
     showVideo(currentIndex);
+
+    //Gallery Lightbox
+    // --- Lightbox / Modal Logik ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevImgBtn = document.querySelector('.lightbox-prev');
+    const nextImgBtn = document.querySelector('.lightbox-next');
+
+    let currentVisibleImages = [];
+    let currentImageIndex = 0;
+
+    // Hilfsfunktion: Ermittelt alle aktuell sichtbaren Bilder
+    function getVisibleImages() {
+        return Array.from(document.querySelectorAll('.photo-item'))
+            .filter(item => item.style.display !== 'none')
+            .map(item => item.querySelector('img'));
+    }
+
+    // Öffnet das Bild am gegebenen Index
+    function openLightbox(index) {
+        currentVisibleImages = getVisibleImages();
+        if (currentVisibleImages.length === 0) return;
+
+        currentImageIndex = index;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+        lightbox.classList.add('active');
+    }
+
+    // Klick-Event auf alle Bild-Container
+    photoItems.forEach(item => {
+        const img = item.querySelector('img');
+        img.addEventListener('click', () => {
+            const visibleImgs = getVisibleImages();
+            const index = visibleImgs.indexOf(img);
+            if (index !== -1) {
+                openLightbox(index);
+            }
+        });
+    });
+
+    // Schließen
+    closeBtn.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+    });
+
+    // Klick außerhalb des Bildes schließt ebenfalls
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.classList.remove('active');
+        }
+    });
+
+    // Nächstes Bild
+    nextImgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentImageIndex = (currentImageIndex + 1) % currentVisibleImages.length;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+    });
+
+    // Vorheriges Bild
+    prevImgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentImageIndex = (currentImageIndex - 1 + currentVisibleImages.length) % currentVisibleImages.length;
+        lightboxImg.src = currentVisibleImages[currentImageIndex].src;
+        lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
+    });
+
+    // Tastatur-Steuerung (Pfeiltasten & ESC)
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+            lightbox.classList.remove('active');
+        } else if (e.key === 'ArrowRight') {
+            nextImgBtn.click();
+        } else if (e.key === 'ArrowLeft') {
+            prevImgBtn.click();
+        }
+    });
 </script>
 
 

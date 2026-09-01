@@ -5,7 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linda Leitner - Portfolio</title>
     <link rel="stylesheet" href="../../stylesheet/photo.css">
-    <link
+
+    <!-- CSS für die Lightbox direkt hier (oder in photo.css einfügen) -->
+    <style>
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 16px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            user-select: none;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        .photo-item img {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -31,7 +93,6 @@
 
     </section>
 
-
     <nav>
         <ul>
             <li><a href="../about.html">About Me</a></li>
@@ -41,16 +102,12 @@
     </nav>
 </header>
 
-
-
-
 <main>
 
     <div class="video-nav">
         <button id="prevVideo">◀</button>
         <button id="nextVideo">▶</button>
     </div>
-
 
     <!-- Foto -->
     <section class="photos">
@@ -84,7 +141,6 @@
             <div class="photo-item people"><img src="../../images/sources/images/people13.png" alt="People 13"></div>
             <div class="photo-item people"><img src="../../images/sources/images/people14.png" alt="People 14"></div>
 
-
             <!-- Landschaft / Landscape -->
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape2.png" alt="Landscape 2"></div>
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape3.png" alt="Landscape 3"></div>
@@ -99,10 +155,6 @@
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape20.png" alt="Landscape 20"></div>
             <div class="photo-item landscape"><img src="../../images/sources/images/landscape21.png" alt="Landscape 21"></div>
 
-
-
-
-
             <!-- Fine Art -->
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart.png" alt="Fine Art 0"></div>
             <div class="photo-item fineart"><img src="../../images/sources/images/fineart1.png" alt="Fine Art 1"></div>
@@ -113,7 +165,6 @@
         </div>
 
     </section>
-
 
 </main>
 
@@ -158,44 +209,43 @@
     let currentIndex = 0;
 
     function showVideo(index) {
-        videos.forEach((video, i) => {
+        videos.forEach((video) => {
             video.classList.remove('active');
 
-            // Stoppe nur HTML-Videos, nicht iframes
             if (video.tagName.toLowerCase() === 'video') {
                 video.pause();
                 video.currentTime = 0;
             }
 
-            // Stoppe YouTube-Video (setzt autoplay ab)
             if (video.tagName.toLowerCase() === 'iframe') {
-                video.src = video.src; // reload to stop playback
+                video.src = video.src;
             }
         });
 
         const activeVideo = videos[index];
-        activeVideo.classList.add('active');
+        if (activeVideo) {
+            activeVideo.classList.add('active');
 
-        // Falls HTML-Video: starte es
-        if (activeVideo.tagName.toLowerCase() === 'video') {
-            activeVideo.play();
+            if (activeVideo.tagName.toLowerCase() === 'video') {
+                activeVideo.play();
+            }
         }
     }
 
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % videos.length;
+    if (prevBtn && nextBtn && videos.length > 0) {
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % videos.length;
+            showVideo(currentIndex);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+            showVideo(currentIndex);
+        });
+
         showVideo(currentIndex);
-    });
+    }
 
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + videos.length) % videos.length;
-        showVideo(currentIndex);
-    });
-
-    // Start mit erstem Video
-    showVideo(currentIndex);
-
-    //Gallery Lightbox
     // --- Lightbox / Modal Logik ---
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -206,14 +256,13 @@
     let currentVisibleImages = [];
     let currentImageIndex = 0;
 
-    // Hilfsfunktion: Ermittelt alle aktuell sichtbaren Bilder
+    // KORRIGIERTE Hilfsfunktion: Erkennt Bilder jetzt auch beim ersten Aufruf richtig!
     function getVisibleImages() {
         return Array.from(document.querySelectorAll('.photo-item'))
-            .filter(item => item.style.display !== 'none')
+            .filter(item => getComputedStyle(item).display !== 'none')
             .map(item => item.querySelector('img'));
     }
 
-    // Öffnet das Bild am gegebenen Index
     function openLightbox(index) {
         currentVisibleImages = getVisibleImages();
         if (currentVisibleImages.length === 0) return;
@@ -224,16 +273,18 @@
         lightbox.classList.add('active');
     }
 
-    // Klick-Event auf alle Bild-Container
+    // Event Listener für jedes Bild
     photoItems.forEach(item => {
         const img = item.querySelector('img');
-        img.addEventListener('click', () => {
-            const visibleImgs = getVisibleImages();
-            const index = visibleImgs.indexOf(img);
-            if (index !== -1) {
-                openLightbox(index);
-            }
-        });
+        if (img) {
+            img.addEventListener('click', () => {
+                const visibleImgs = getVisibleImages();
+                const index = visibleImgs.indexOf(img);
+                if (index !== -1) {
+                    openLightbox(index);
+                }
+            });
+        }
     });
 
     // Schließen
@@ -241,30 +292,30 @@
         lightbox.classList.remove('active');
     });
 
-    // Klick außerhalb des Bildes schließt ebenfalls
     lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
             lightbox.classList.remove('active');
         }
     });
 
-    // Nächstes Bild
+    // Vor / Zurück
     nextImgBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (currentVisibleImages.length === 0) return;
         currentImageIndex = (currentImageIndex + 1) % currentVisibleImages.length;
         lightboxImg.src = currentVisibleImages[currentImageIndex].src;
         lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
     });
 
-    // Vorheriges Bild
     prevImgBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (currentVisibleImages.length === 0) return;
         currentImageIndex = (currentImageIndex - 1 + currentVisibleImages.length) % currentVisibleImages.length;
         lightboxImg.src = currentVisibleImages[currentImageIndex].src;
         lightboxImg.alt = currentVisibleImages[currentImageIndex].alt;
     });
 
-    // Tastatur-Steuerung (Pfeiltasten & ESC)
+    // Tastatur-Navigation
     document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('active')) return;
 
@@ -277,7 +328,6 @@
         }
     });
 </script>
-
 
 </body>
 </html>
